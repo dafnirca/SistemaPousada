@@ -1,18 +1,37 @@
+from produto import Produto
 class Quarto:
-    def __init__(self, numero, categoria, diaria, status='L'):
+     # Verificar sobre o valor do atributo 'categoria' (char)
+     # Criando o método init para inicializar a classe
+    def __init__(self, numero:int, diaria:float, categoria=['S','M','P'], status=['L','O'], codigo = Produto):
         self.numero = numero
         self.categoria = categoria  # S: Standard, M: Master, P: Premium
         self.diaria = diaria        # Valor da diária do quarto
         self.status = status        # L: Livre, O: Ocupado
         self.consumo = []           # Lista de códigos de produtos consumidos
+        self.codigo = codigo
     
-    def registrar_consumo(self, codigo_produto):
+    def adiciona_consumo(self, codigo):
         """Adiciona um produto à lista de consumo."""
-        self.consumo.append(codigo_produto)
+        self.consumo.append(codigo)
+        print(self.consumo)
     
-    def limpar_consumo(self):
+    def lista_consumo(self):
+        for item in self.consumo:
+            print(item)
+    
+    def valor_total_consumo(self, preco):
+
+    def limpa_consumo(self):
         """Limpa o consumo após o check-out."""
         self.consumo.clear()
-    
+
+    # Criando o método para imprimir as informações da classe Quarto
     def __str__(self):
         return f"Quarto {self.numero} - Categoria: {self.categoria}, Status: {self.status}, Diária: R$ {self.diaria:.2f}"
+
+def main():
+     
+     j = Produto(1, "Café", 5.00)
+     i = Quarto
+     i.adiciona_consumo(j)
+main()
