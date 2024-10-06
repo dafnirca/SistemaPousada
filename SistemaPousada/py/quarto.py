@@ -1,4 +1,5 @@
 from produto import Produto
+
 class Quarto:
      # Verificar sobre o valor do atributo 'categoria' (char)
      # Criando o método init para inicializar a classe
@@ -11,7 +12,7 @@ class Quarto:
         self.codigo = codigo
     
     def adiciona_consumo(self, codigo):
-        """Adiciona um produto à lista de consumo."""
+        #Adiciona um produto à lista de consumo.
         self.consumo.append(codigo)
         print(self.consumo)
     
@@ -30,6 +31,3 @@ class Quarto:
     def __str__(self):
         return f"Quarto {self.numero} - Categoria: {self.categoria}, Status: {self.status}, Diária: R$ {self.diaria:.2f}"
 
-def main():
-    
-main()
