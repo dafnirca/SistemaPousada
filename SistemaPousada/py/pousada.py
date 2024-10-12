@@ -29,7 +29,6 @@ class Pousada:
                 arquivo_produtos.write(f"{produto.codigo},{produto.nome},{produto.preco}\n")
         arquivo_produtos.close()
             
-              
 
     def carrega_dados(self):
           
@@ -57,55 +56,49 @@ class Pousada:
         print(produtos)                             #Criar a tabela das informações
         arquivo_produtos.close()
 
-
     #consultando a disponibilidade dos quartos e se estão disponíveis.
     def consulta_disponibilidade(self, data: int, quarto: Quarto):
-
-        numero_quarto = quarto.get('numero')
-
-        if not numero_quarto:
-            print("Número do quarto não foi encontrado.")
-            return False
-             
-    # # Procurar o quarto na lista de quartos
-    #     quarto_encontrado = False
-    #     for i in self.quarto: 
-    #         if i == self.numero:
-    #             quarto_encontrado = True
-    #         break
-
-    #     if not quarto_encontrado:
-    #         print(f"Quarto {quarto} não encontrado.")
-    #         return False   
-        
-        # Verificar as reservas para esse quarto
+    # Verificar as reservas para esse quarto
         for reserva in self.reservas:
             if reserva.quarto.numero == quarto.numero:
-                # Se a data fornecida está no intervalo da reserva, o quarto está ocupado
                 if reserva.dia_inicio <= data <= reserva.dia_fim and reserva.status == 'A':
-                    print(f"Quarto {quarto.numero} está ocupado de {reserva.dia_inicio} a {reserva.dia_fim}.")
-                    return False  # Quarto ocupado
-        
+                   print(f"Quarto {quarto.numero} está ocupado de {reserva.dia_inicio} a {reserva.dia_fim}.")
+                   return False  # Quarto ocupado
         print(f"Quarto {quarto.numero} está disponível na data {data}.")
-        return True  # Quarto disponível    
-        
+        return True  # Quarto disponível
 
+    def consulta_reserva(self, data: int, cliente: str, quarto: Quarto):
+        for reserva in self.reservas:
+            if (cliente and reserva.cliente == cliente) or (quarto and reserva.quarto.numero == quarto.numero) or (data and reserva.dia_inicio <= data <= reserva.dia_fim):
+               print(f"Reserva encontrada: Cliente: {reserva.cliente}, Quarto: {reserva.quarto.numero}, de {reserva.dia_inicio} a {reserva.dia_fim}. Status: {reserva.status}")
+               return reserva
+        print("Nenhuma reserva encontrada.")
 
-            
         
 def main():
-
-    i = Pousada('Pousada Salem e Pesca', '@salemepesca')
-
-    i.quarto.append(Quarto(1,1000,'S','L',1))
-    i.reservas.append(Reserva('Dafni',1 , 4, 1,'A'))
-    i.produtos.append(Produto(1, 'Café', 10))
-
-    i.salva_dados()
-    i.carrega_dados()
+    # Criando a pousada
+    pousada = Pousada('Pousada Salem e Pesca', '@salemepesca')
     
-    i.consulta_disponibilidade(1,1)
+    # Criando quartos
+    quarto1 = Quarto(1, 100.0, 'S', 'L')
+    quarto2 = Quarto(2, 200.0, 'M', 'L')
+    quarto3 = Quarto(3, 300.0, 'P', 'L')
+    pousada.quarto.extend([quarto1, quarto2, quarto3])  # Adicionando os quartos à lista
+
+    # Criando produtos
+    produto1 = Produto(1, "Café", 5.0)
+    produto2 = Produto(2, "Água", 2.0)
+    pousada.produtos.extend([produto1, produto2])
+
+    # Criando reservas
+    reserva1 = Reserva('Cliente A', 1, 3, quarto1, 'A')
+    pousada.reservas.append(reserva1)
     
+    # Teste das funções
+    print("Testes:")
+    pousada.consulta_disponibilidade(2, quarto1)  # Deve retornar ocupado
+    pousada.consulta_disponibilidade(4, quarto1)  # Deve retornar disponível
     
+    pousada.consulta_reserva(2, 'Cliente A', quarto1)
 
 main()

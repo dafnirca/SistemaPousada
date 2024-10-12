@@ -1,7 +1,7 @@
 from quarto import Quarto
 class Reserva:
     # Criando o método init para inicializar a classe                           #Verificar com a sora
-    def __init__(self, cliente:str, dia_inicio:int, dia_fim:int, quarto: Quarto, status=['A','C','I','O']):
+    def __init__(self, cliente:str, dia_inicio:int, dia_fim:int, quarto: Quarto, status='A'):
         self.cliente = cliente
         self.quarto = quarto
         self.dia_inicio = dia_inicio
