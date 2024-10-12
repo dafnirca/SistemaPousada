@@ -12,6 +12,10 @@ class Quarto:
         self.codigo = codigo
     
 
+# Criando o método para imprimir as informações da classe Quarto
+    def __str__(self):
+        return f"Quarto {self.numero} - Categoria: {self.categoria}, Status: {self.status}, Diária: R$ {self.diaria:.2f}"
+    
     def adiciona_consumo(self, codigo):
         #Adiciona um produto à lista de consumo.
         self.consumo.append(codigo)
@@ -39,9 +43,7 @@ class Quarto:
         self.consumo.clear()
         return
 
-    # Criando o método para imprimir as informações da classe Quarto
-    def __str__(self):
-        return f"Quarto {self.numero} - Categoria: {self.categoria}, Status: {self.status}, Diária: R$ {self.diaria:.2f}"
+    
 
 
 
