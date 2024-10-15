@@ -1,1 +1,5 @@
-1,Caf�,5.0
+1,Café,5.0
+2,Água,2.0
+3,Coca-cola,6.0
+4,Energético,7.0
+5,Chocolate,4.0

@@ -2,8 +2,9 @@ from reserva import Reserva
 from quarto import Quarto
 from produto import Produto
 
+# Criando a Classe Pousada
 class Pousada:
-    # Criando o método init para inicializar a classe 
+    # Criando o método construtor para inicializar a classe Pousada
     def __init__ (self, nome:str, contato:str):
         self.nome = nome
         self.contato = contato
@@ -11,26 +12,30 @@ class Pousada:
         self.reservas = []
         self.produtos = []
 
+    # Criando o método para imprimir as informações da classe Pousada
+    def __str__(self):
+        return f"Nome: {self.nome} - Contato: {self.contato} - Quartos: {self.quarto} - Reservas: {self.reservas} - Produtos disponiveis: {self.produtos}"
     
+    # Método para salvar os dados da Pousada
     def salva_dados(self):
-    # Salvando os dados dos quartos
-        arquivo_quartos = open("data/quarto.txt", "w")
+        # Salvando os dados dos quartos
+        arquivo_quartos = open("SistemaPousada/SistemaPousada/data/quarto.txt", "w", encoding="UTF-8")
         for quarto in self.quarto:
         # Escreve os dados do quarto no arquivo
             linha_quarto = f"{quarto.numero},{quarto.diaria},{quarto.categoria},{quarto.status}\n"
             arquivo_quartos.write(linha_quarto)
         arquivo_quartos.close()  # Fechar o arquivo manualmente
 
-    # Salvando os dados das reservas
-        arquivo_reservas = open("data/reserva.txt", "w")
+        # Salvando os dados das reservas
+        arquivo_reservas = open("SistemaPousada/SistemaPousada/data/reserva.txt", "w", encoding="UTF-8      ")
         for reserva in self.reservas:
         # Escreve os dados da reserva no arquivo
             linha_reserva = f"{reserva.cliente},{reserva.dia_inicio},{reserva.dia_fim},{reserva.quarto.numero},{reserva.status}\n"
             arquivo_reservas.write(linha_reserva)
         arquivo_reservas.close()  # Fechar o arquivo manualmente
 
-    # Salvando os dados dos produtos
-        arquivo_produtos = open("data/produto.txt", "w")
+        # Salvando os dados dos produtos
+        arquivo_produtos = open("SistemaPousada/SistemaPousada/data/produto.txt", "w", encoding="UTF-8")
         for produto in self.produtos:
         # Escreve os dados do produto no arquivo
            linha_produto = f"{produto.codigo},{produto.nome},{produto.preco}\n"
@@ -39,35 +44,36 @@ class Pousada:
 
         print("Dados salvos com sucesso.")         
 
+    # Método para carregar os dados da pousada
     def carrega_dados(self):
-    # Carregando os dados dos quartos
-        arquivo_quartos = open("data/quarto.txt", "r")
+        # Carregando os dados dos quartos
+        arquivo_quartos = open("SistemaPousada/SistemaPousada/data/quarto.txt", "r")
         for linha in arquivo_quartos:
-        # Dividir a linha do arquivo em partes e criar o objeto Quarto
+            # Dividir a linha do arquivo em partes e criar o objeto Quarto
             numero, diaria, categoria, status = linha.strip().split(",")
             quarto = Quarto(int(numero), float(diaria), categoria, status)
             self.quarto.append(quarto)  # Adiciona o quarto à lista de quartos
         arquivo_quartos.close()  # Fechar o arquivo manualmente
 
-    # Carregando os dados das reservas
-        arquivo_reservas = open("data/reserva.txt", "r")
+        # Carregando os dados das reservas
+        arquivo_reservas = open("SistemaPousada/SistemaPousada/data/reserva.txt", "r")
         for linha in arquivo_reservas:
-        # Dividir a linha do arquivo em partes e criar o objeto Reserva
+            # Dividir a linha do arquivo em partes e criar o objeto Reserva
             cliente, dia_inicio, dia_fim, numero_quarto, status = linha.strip().split(",")
-        # Encontrar o quarto correto para a reserva
+            # Encontrar o quarto correto para a reserva
             quarto_reservado = None
             for quarto in self.quarto:
                 if quarto.numero == int(numero_quarto):
                     quarto_reservado = quarto
                     break
-        # Se o quarto foi encontrado, cria a reserva
+            # Se o quarto foi encontrado, cria a reserva
             if quarto_reservado:
                 reserva = Reserva(cliente, int(dia_inicio), int(dia_fim), quarto_reservado, status)
                 self.reservas.append(reserva)  # Adiciona a reserva à lista de reservas
         arquivo_reservas.close()  # Fechar o arquivo manualmente
 
-    # Carregando os dados dos produtos
-        arquivo_produtos = open("data/produto.txt", "r")
+        # Carregando os dados dos produtos
+        arquivo_produtos = open("SistemaPousada/SistemaPousada/data/produto.txt", "r")
         for linha in arquivo_produtos:
         # Dividir a linha do arquivo em partes e criar o objeto Produto
             codigo, nome, preco = linha.strip().split(",")
@@ -77,140 +83,164 @@ class Pousada:
 
         print("Dados carregados com sucesso.")
    
-    def consulta_disponibilidade(self, data: int, quarto: Quarto):
     #  Consulta a disponibilidade dos quartos e se estão disponíveis.
+    def consulta_disponibilidade(self, data: int, quarto: Quarto):
+    
     # Verificar as reservas para esse quarto
         for reserva in self.reservas:
             if reserva.quarto.numero == quarto.numero:
-                if reserva.dia_inicio <= data <= reserva.dia_fim and reserva.status == 'A':
-                   print(f"Quarto {quarto.numero} está ocupado de {reserva.dia_inicio} a {reserva.dia_fim}.")
+                if reserva.dia_inicio <= data <= reserva.dia_fim and reserva.status == 'A' or reserva.status == 'I':
+                   print(f"\nO quarto {quarto.numero} está ocupado entre os dias {reserva.dia_inicio} e {reserva.dia_fim}.")
                    return False  # Quarto ocupado
-        print(f"Quarto {quarto.numero} está disponível na data {data}.")
+        print(f"{quarto} está disponível no dia {data}.")
         return True  # Quarto disponível
-
+    
+    # Consulta reservas ativas com base em uma data, nome do cliente e/ou número do quarto.
     def consulta_reserva(self, data: int = None, cliente: str = None, quarto: Quarto = None):
-      # Consulta reservas ativas com base em uma data, nome do cliente e/ou número do quarto.
+        # Cria lista para armazenar as reservas encontradas
+        reservas_encontradas = []
+        
+        # Verifica o status da reserva 
         for reserva in self.reservas:
-            if (cliente and reserva.cliente == cliente) or (quarto and reserva.quarto.numero == quarto.numero) or (data and reserva.dia_inicio <= data <= reserva.dia_fim):
-               print(f"Reserva encontrada: Cliente: {reserva.cliente}, Quarto: {reserva.quarto.numero}, de {reserva.dia_inicio} a {reserva.dia_fim}. Status: {reserva.status}")
-               return reserva
-        print("Nenhuma reserva encontrada.")
-        return None
+            if reserva.status == 'A':
+                pass
 
+            # Criando variáveis para consultar as reservas
+            data_encontrada = (data is None or (reserva.dia_inicio <= data <= reserva.dia_fim))
+            cliente_encontrado = (cliente is None or reserva.cliente == cliente)
+            quarto_encontrado = (quarto is None or reserva.quarto.numero == quarto)
+
+            # Se a reserva existe, ela é adicionada a lista "reservas_encontradas"
+            if data_encontrada and cliente_encontrado and quarto_encontrado:
+                reservas_encontradas.append(reserva)
+
+        # Imprimindo as reservas encontradas na tela
+        if reservas_encontradas:
+            for reserva in reservas_encontradas:
+                print(f"========== Reserva(s) encontrada(s) ========== \n\nCliente: {reserva.cliente}\nQuarto: {reserva.quarto.numero}\nDia Inicio: {reserva.dia_inicio}\nDia Final: {reserva.dia_fim}\nCategora: {reserva.quarto.categoria}\nStatus: {reserva.status}\nDiária: {reserva.quarto.diaria}\n")
+                      
+        else:
+            print(f"Nenhuma reserva encontrada com essas informações.")          
+
+    # Faz uma reserva para o cliente se o quarto estiver disponível e o cliente não tiver outra reserva ativa.
     def realiza_reserva(self, data_inicio: int, data_fim: int, cliente: str, quarto: Quarto):
-      # Faz uma reserva para o cliente se o quarto estiver disponível e o cliente não tiver outra reserva ativa.
 
-    # Verifica se o quarto está ocupado no período solicitado
+        # Verifica se o quarto está ocupado no período solicitado
         for reserva in self.reservas:
-            if reserva.quarto.numero == quarto.numero and reserva.status == 'A':
-            # Verifica se as datas da nova reserva estão dentro de uma reserva existente
+            if reserva.quarto.numero == quarto.numero and reserva.status == 'A' or reserva.status == 'I':
+                # Verifica se as datas da nova reserva estão dentro de uma reserva existente
                 if data_inicio <= reserva.dia_fim and data_fim >= reserva.dia_inicio:
-                    print(f"Quarto {quarto.numero} está ocupado de {reserva.dia_inicio} a {reserva.dia_fim}.")
+                    print(f"Quarto {quarto.numero} está ocupado entre os dias {reserva.dia_inicio} e {reserva.dia_fim}.")
                     return False  # Quarto ocupado
 
-    # Verifica se o cliente já tem uma reserva ativa
+        # Verifica se o cliente já tem uma reserva ativa
         for reserva in self.reservas:
-            if reserva.cliente == cliente and reserva.status == 'A':
-                print(f"Cliente {cliente} já tem uma reserva ativa.")
+            if reserva.cliente == cliente and reserva.status == 'A' or reserva.status == 'T' :
+                print(f"Cliente {cliente} já tem uma reserva ativa na pousada.")
                 return False  # Cliente já tem reserva ativa
 
-    # Se o quarto estiver disponível e o cliente não tiver outra reserva, cria uma nova reserva
+        # Se o quarto estiver disponível e o cliente não tiver outra reserva, cria uma nova reserva
         nova_reserva = Reserva(cliente, data_inicio, data_fim, quarto, 'A')  # Status 'A' para Ativa
         self.reservas.append(nova_reserva)
-        print(f"Reserva realizada com sucesso para o cliente {cliente}.")
+        print(f"Reserva realizada com sucesso para o(a) cliente {cliente}.")
         return True
 
+    # Cancela a reserva ativa de um cliente.
     def cancela_reserva(self, cliente):
-        # Cancela a reserva ativa de um cliente.
+
+        # Verifica se o cliente tem uma reserva ativa e cancela
         for reserva in self.reservas:
             if reserva.cliente == cliente and reserva.status == 'A':
                 reserva.status = 'C'
-                print(f"Reserva de {cliente} foi cancelada com sucesso.")
+                print(f"Reserva cancelada com sucesso.")
                 return True
             
-        print(f"Não foi encontrada uma reserva ativa para o cliente {cliente}.")
+        print(f"Não foi encontrada uma reserva ativa para o(a) cliente {cliente}.")
         return False
 
+    # Realiza o check-in do cliente se ele tiver uma reserva ativa.
     def realiza_checkin(self, cliente: str):
-        #  Realiza o check-in do cliente se ele tiver uma reserva ativa.
-
+        
         for reserva in self.reservas:
+            #Calcula o período de dias e o valor total da diária
+            dia_total = reserva.dia_fim - reserva.dia_inicio
+            diaria_total = reserva.quarto.diaria * dia_total
+
+            # Verifica se o cliente informado tem uma reserva ativa e realiza o check-in
             if reserva.cliente == cliente and reserva.status == 'A':
                 reserva.status = 'I'  # Muda o status para Check-In
-                print(f"Check-in realizado para o cliente {cliente}. Quarto {reserva.quarto.numero}, de {reserva.dia_inicio} a {reserva.dia_fim}.")
+                print(f"\n{cliente} realizou o check-in no quarto {reserva.quarto.numero}, entre os dias {reserva.dia_inicio} e {reserva.dia_fim}, pelo período de {dia_total} dias.\nNo valor total de R${diaria_total}.\n")
                 return True
 
-        print(f"Não foi encontrada uma reserva ativa para o cliente {cliente}.")
+        print(f"Não foi encontrada nenhuma reserva ativa para o cliente {cliente}.")
         return False
-
+    
+    # Realiza o check-out do cliente, finalizando a estadia e limpando o consumo.
     def realiza_checkout(self, cliente: str):
-        # Realiza o check-out do cliente, finalizando a estadia e limpando o consumo.
-
+        
         for reserva in self.reservas:
+            # Verifica se o cliente tem um check-in ativo
             if reserva.cliente == cliente and reserva.status == 'I':
+                # Calcula valor total da diaria e do consumo e o periodo de dias 
+                total_consumo = reserva.quarto.valor_total_consumo()
                 dias = reserva.dia_fim - reserva.dia_inicio
-                valor_total = dias * reserva.quarto.diaria + reserva.quarto.valor_total_consumo()
-                print(f"Check-out realizado para o cliente {cliente}. Valor final: R${valor_total:.2f}")
+                total_diaria = dias * reserva.quarto.diaria
+                valor_total = total_consumo + total_diaria
+                
+                #Imprime as informações do check-out na tela
+                print(f"\n{cliente} realizou o check-out do quarto {reserva.quarto.numero}. No qual se hospedou entre os dias {reserva.dia_inicio} e {reserva.dia_fim}, no período de {dias} dias. \nNo valor total da diária: R${total_diaria:.2f}\n")
+                print('-'*15,'Produtos Consumidos','-'*15,'\n')
+                reserva.quarto.lista_consumo()
+                print('-'*50)
+                print(f"Valor total consumido: {total_consumo}")
+                print(f"Valor total á ser pago: {valor_total}\n")
+
+                #Muda o Status e limpa o consumo
                 reserva.status = 'O'
                 reserva.quarto.limpa_consumo()
                 return True
             
-        print(f"Não foi encontrado check-in ativo para o cliente {cliente}.")
+        print(f"Não foi encontrado check-in ativo para o(a) cliente {cliente}.")
         return False
-        
-def main():
-
-    # Criando a pousada
-    pousada = Pousada('Pousada Salem e Pesca', '@salemepesca')
-
-    # Criando alguns quartos, produtos e reservas
-    quarto1 = Quarto(1, 100.0, 'S', 'L')
-    quarto2 = Quarto(2, 200.0, 'M', 'L')
-    quarto3 = Quarto(3, 300.0, 'P', 'L')
-    pousada.quarto.extend([quarto1, quarto2, quarto3])
-
-    produto1 = Produto(1, "Café", 5.0)
-    produto2 = Produto(2, "Água", 2.0)
-    pousada.produtos.extend([produto1, produto2])
-
-    reserva1 = Reserva('Cliente A', 1, 3, quarto1, 'A')
-    pousada.reservas.append(reserva1)
-
-    pousada.quarto.append(quarto1)
-    pousada.quarto.append(quarto2)
-    pousada.produtos.append(produto1)
-    pousada.reservas.append(reserva1)
-
-    # Salvando os dados
-    pousada.salva_dados()
-
-    # Limpando as listas para testar o carregamento
-    pousada.quarto.clear()
-    pousada.reservas.clear()
-    pousada.produtos.clear()
-
-    # Carregando os dados novamente
-    pousada.carrega_dados()
-
-    # Teste das funções
-    print("\n--- Teste de disponibilidade ---")
-    pousada.consulta_disponibilidade(2, quarto1)  # Deve retornar ocupado
-    pousada.consulta_disponibilidade(4, quarto1)  # Deve retornar disponível
     
-    print("\n--- Teste de consulta de reserva ---")
-    pousada.consulta_reserva(2, 'Cliente A', quarto1)
+    # Método para registro de consumo dos produtos
+    def registrar_consumo(self, cliente: str):
+        for reserva in self.reservas:
+            # Verifica se o cliente tem um check-in ativo no nome dele
+            if reserva.cliente == cliente and reserva.status == "I": 
+                # Repete o menu dos produto da pousada
+                while True:
+                    print('='*20,'Copa','='*20,'\n')
+                    for produto in self.produtos:
+                        print(produto)
+                    print('-'*46)
 
-    print("\n--- Teste de realização de reservas ---")
-    pousada.realiza_reserva(4, 6, 'Cliente A', quarto1)  # Deve falhar, pois Cliente A já tem reserva ativa
-    pousada.realiza_reserva(4, 6, 'Cliente B', quarto2)  # Deve ser bem-sucedido
+                    # Usuário escolhe o código de um produto
+                    opcao = int(input('\nEscolha o código do produto: '))
 
-    print("\n--- Teste de cancelamento de reserva ---")
-    pousada.cancela_reserva('Cliente B')  # Cancela a reserva de Cliente B
+                    # Verifica a existência do produto selecionado pelo cliente
+                    produto_selecionado = None
+                    for produto in self.produtos:
+                        if opcao == produto.codigo:
+                            produto_selecionado = produto
+                            break
+            
+                    # Adiciona o produto selecionado ao consumo do quarto e imprime a lista de consumo
+                    if produto_selecionado:
+                        reserva.quarto.adiciona_consumo(produto_selecionado)
+                        print(f"\nProduto {produto_selecionado.nome} adicionado ao consumo.")
+                        print('-'*46)
+                        reserva.quarto.lista_consumo()
+                        print('')
+                    else:
+                        print('\nEste código de produto não existe. Insira um valor válido.')
 
-    print("\n--- Teste de check-in ---")
-    pousada.realiza_checkin('Cliente A')  # Realiza o check-in de Cliente A
-    
-    print("\n--- Teste de check-out ---")
-    pousada.realiza_checkout('Cliente A')  # Realiza o check-out de Cliente A
-
-main()
+                    # Pergunta ao usuário se ele deseja continuar consumindo
+                    mais_produto = str(input('\nVocê deseja mais algum produto?(S/N) '))
+                    print('')
+                    if mais_produto == 's' or mais_produto == 'S':
+                        continue
+                    else:
+                        return False
+        else: 
+            print(f'Não existe check-in para o(a) cliente {cliente}.')
