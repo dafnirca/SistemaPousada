@@ -20,6 +20,9 @@ class Pousada:
     def salva_dados(self):
         # Salvando os dados dos quartos
         arquivo_quartos = open("SistemaPousada/SistemaPousada/data/quarto.txt", "w", encoding="UTF-8")
+       
+        # Escrevendo o cabeçalho
+        arquivo_quartos.write("numero,diaria,categoria,status\n")
         for quarto in self.quarto:
         # Escreve os dados do quarto no arquivo
             linha_quarto = f"{quarto.numero},{quarto.diaria},{quarto.categoria},{quarto.status}\n"
@@ -28,6 +31,10 @@ class Pousada:
 
         # Salvando os dados das reservas
         arquivo_reservas = open("SistemaPousada/SistemaPousada/data/reserva.txt", "w", encoding="UTF-8      ")
+        
+        # Escrevendo o cabeçalho
+        arquivo_quartos.write("cliente,dia_de_inicio,dia_final,numero_do_quarto,status\n")
+        
         for reserva in self.reservas:
         # Escreve os dados da reserva no arquivo
             linha_reserva = f"{reserva.cliente},{reserva.dia_inicio},{reserva.dia_fim},{reserva.quarto.numero},{reserva.status}\n"
@@ -36,6 +43,10 @@ class Pousada:
 
         # Salvando os dados dos produtos
         arquivo_produtos = open("SistemaPousada/SistemaPousada/data/produto.txt", "w", encoding="UTF-8")
+                
+        # Escrevendo o cabeçalho
+        arquivo_quartos.write("codigo,nome,preço\n")
+        
         for produto in self.produtos:
         # Escreve os dados do produto no arquivo
            linha_produto = f"{produto.codigo},{produto.nome},{produto.preco}\n"
@@ -46,8 +57,24 @@ class Pousada:
 
     # Método para carregar os dados da pousada
     def carrega_dados(self):
+
+        # Carregar os dados da pousada (nome e contato)
+        arquivo_pousada = open("SistemaPousada/SistemaPousada/data/pousada.txt", "r", encoding="UTF-8")
+        
+        next(arquivo_pousada)  # Ignorar o cabeçalho
+        
+        linha = arquivo_pousada.readline().strip()
+        nome, contato = linha.split(",")
+        self.nome = nome
+        self.contato = contato
+
+        arquivo_quartos.close()  # Fechar o arquivo manualmente
+
         # Carregando os dados dos quartos
         arquivo_quartos = open("SistemaPousada/SistemaPousada/data/quarto.txt", "r")
+        
+        next(arquivo_quartos)  # Ignora o cabeçalho
+
         for linha in arquivo_quartos:
             # Dividir a linha do arquivo em partes e criar o objeto Quarto
             numero, diaria, categoria, status = linha.strip().split(",")
@@ -57,6 +84,9 @@ class Pousada:
 
         # Carregando os dados das reservas
         arquivo_reservas = open("SistemaPousada/SistemaPousada/data/reserva.txt", "r")
+        
+        next(arquivo_reservas)  # Ignora o cabeçalho
+
         for linha in arquivo_reservas:
             # Dividir a linha do arquivo em partes e criar o objeto Reserva
             cliente, dia_inicio, dia_fim, numero_quarto, status = linha.strip().split(",")
@@ -74,6 +104,9 @@ class Pousada:
 
         # Carregando os dados dos produtos
         arquivo_produtos = open("SistemaPousada/SistemaPousada/data/produto.txt", "r")
+        
+        next(arquivo_produtos)  # Ignora o cabeçalho
+
         for linha in arquivo_produtos:
         # Dividir a linha do arquivo em partes e criar o objeto Produto
             codigo, nome, preco = linha.strip().split(",")

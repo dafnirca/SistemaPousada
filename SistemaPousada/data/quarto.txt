@@ -1,3 +1,4 @@
+numero,diaria,categoria,status
 1,100.0,S,L
 2,200.0,S,L
 3,300.0,M,L

@@ -1,3 +1,4 @@
+codigo,nome,preco
 1,Café,5.0
 2,Água,2.0
 3,Coca-cola,6.0

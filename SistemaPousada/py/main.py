@@ -9,36 +9,8 @@ def main():
     # Criando a instância pousada
     pousada = Pousada('Pousada Salem e Pesca', '@salemepesca')
 
-    # Criando as instâncias dos quartos
-    quarto1 = Quarto(1, 100.0, 'S', 'L')
-    quarto2 = Quarto(2, 200.0, 'S', 'L')
-    quarto3 = Quarto(3, 300.0, 'M', 'L')
-    quarto4 = Quarto(4, 400.0, 'M', 'L')
-    quarto5 = Quarto(5, 500.0, 'P', 'L')
-    quarto6 = Quarto(6, 600.0, 'P', 'L')
-
-    # Adicionando as instâncias dos quartos na pousada
-    pousada.quarto.extend([quarto1, quarto2, quarto3, quarto4, quarto5, quarto6])
-
-    # Criando as instâncias dos produtos
-    produto1 = Produto(1, "Café", 5.0)
-    produto2 = Produto(2, "Água", 2.0)
-    produto3 = Produto(3, "Coca-cola", 6.0)
-    produto4 = Produto(4, "Energético", 7.0)
-    produto5 = Produto(5, "Chocolate", 4.0)
-
-    # Adicionando as instâncias dos produtos na pousada
-    pousada.produtos.extend([produto1, produto2,produto3, produto4, produto5])
-
-    # Criando as instâncias das reservas ativas 
-    reserva1 = Reserva('Dafni', 1, 3, quarto1, 'A')
-    reserva2 = Reserva('Salem', 4, 6, quarto1, 'A')
-    reserva3 = Reserva('Luis', 3, 6, quarto3, 'A')
-    reserva4 = Reserva('Eduardo', 7, 9, quarto3, 'A')
-    reserva5 = Reserva('Maria Luiza', 1, 6, quarto5, 'A')
-
-    # Adicionando as reservas ativas na pousada
-    pousada.reservas.extend([reserva1, reserva2, reserva3, reserva4, reserva5])
+    # Carregar todos os dados (quartos, reservas, produtos) da pousada
+    pousada.carrega_dados()
 
     # Loop para a repetição do menu
     while True:
