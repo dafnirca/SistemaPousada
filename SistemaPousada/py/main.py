@@ -14,7 +14,7 @@ def main():
 
     # Loop para a repetição do menu
     while True:
-    
+        
         print('=========== MENU ===========\n')
         print("1. Consultar Disponibilidade")
         print("2. Consultar Reserva")

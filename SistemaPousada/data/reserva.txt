@@ -1,7 +1,6 @@
 cliente,dia_de_inicio,dia_final,numero_do_quarto,status
-Dafni,1,3,1,O
+Dafni,1,3,1,A
 Salem,4,6,1,A
-Luis,3,6,3,C
+Luis,3,6,3,A
 Eduardo,7,9,3,A
-Maria Luiza,1,6,5,O
-Dudu,3,6,3,O
+Maria Luiza,1,6,5,A

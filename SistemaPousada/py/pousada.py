@@ -19,7 +19,7 @@ class Pousada:
     # Método para salvar os dados da Pousada
     def salva_dados(self):
         # Salvando os dados dos quartos
-        arquivo_quartos = open("SistemaPousada/SistemaPousada/data/quarto.txt", "w", encoding="UTF-8")
+        arquivo_quartos = open("data/quarto.txt", "w", encoding="UTF-8")
        
         # Escrevendo o cabeçalho
         arquivo_quartos.write("numero,diaria,categoria,status\n")
@@ -27,10 +27,10 @@ class Pousada:
         # Escreve os dados do quarto no arquivo
             linha_quarto = f"{quarto.numero},{quarto.diaria},{quarto.categoria},{quarto.status}\n"
             arquivo_quartos.write(linha_quarto)
-        arquivo_quartos.close()  # Fechar o arquivo manualmente
+
 
         # Salvando os dados das reservas
-        arquivo_reservas = open("SistemaPousada/SistemaPousada/data/reserva.txt", "w", encoding="UTF-8      ")
+        arquivo_reservas = open("data/reserva.txt", "w", encoding="UTF-8      ")
         
         # Escrevendo o cabeçalho
         arquivo_quartos.write("cliente,dia_de_inicio,dia_final,numero_do_quarto,status\n")
@@ -42,7 +42,7 @@ class Pousada:
         arquivo_reservas.close()  # Fechar o arquivo manualmente
 
         # Salvando os dados dos produtos
-        arquivo_produtos = open("SistemaPousada/SistemaPousada/data/produto.txt", "w", encoding="UTF-8")
+        arquivo_produtos = open("data/produto.txt", "w", encoding="UTF-8")
                 
         # Escrevendo o cabeçalho
         arquivo_quartos.write("codigo,nome,preço\n")
@@ -59,7 +59,7 @@ class Pousada:
     def carrega_dados(self):
 
         # Carregar os dados da pousada (nome e contato)
-        arquivo_pousada = open("SistemaPousada/SistemaPousada/data/pousada.txt", "r", encoding="UTF-8")
+        arquivo_pousada = open("data/pousada.txt", "r", encoding="UTF-8")
         
         next(arquivo_pousada)  # Ignorar o cabeçalho
         
@@ -68,10 +68,9 @@ class Pousada:
         self.nome = nome
         self.contato = contato
 
-        arquivo_quartos.close()  # Fechar o arquivo manualmente
 
         # Carregando os dados dos quartos
-        arquivo_quartos = open("SistemaPousada/SistemaPousada/data/quarto.txt", "r")
+        arquivo_quartos = open("data/quarto.txt", "r", encoding="UTF-8")
         
         next(arquivo_quartos)  # Ignora o cabeçalho
 
@@ -83,7 +82,7 @@ class Pousada:
         arquivo_quartos.close()  # Fechar o arquivo manualmente
 
         # Carregando os dados das reservas
-        arquivo_reservas = open("SistemaPousada/SistemaPousada/data/reserva.txt", "r")
+        arquivo_reservas = open("data/reserva.txt", "r", encoding="UTF-8")
         
         next(arquivo_reservas)  # Ignora o cabeçalho
 
@@ -103,7 +102,7 @@ class Pousada:
         arquivo_reservas.close()  # Fechar o arquivo manualmente
 
         # Carregando os dados dos produtos
-        arquivo_produtos = open("SistemaPousada/SistemaPousada/data/produto.txt", "r")
+        arquivo_produtos = open("data/produto.txt", "r", encoding="UTF-8")
         
         next(arquivo_produtos)  # Ignora o cabeçalho
 
