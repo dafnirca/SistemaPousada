@@ -27,13 +27,14 @@ class Pousada:
         # Escreve os dados do quarto no arquivo
             linha_quarto = f"{quarto.numero},{quarto.diaria},{quarto.categoria},{quarto.status}\n"
             arquivo_quartos.write(linha_quarto)
+            arquivo_quartos.close()
 
 
         # Salvando os dados das reservas
         arquivo_reservas = open("data/reserva.txt", "w", encoding="UTF-8      ")
         
         # Escrevendo o cabeçalho
-        arquivo_quartos.write("cliente,dia_de_inicio,dia_final,numero_do_quarto,status\n")
+        arquivo_reservas.write("cliente,dia_de_inicio,dia_final,numero_do_quarto,status\n")
         
         for reserva in self.reservas:
         # Escreve os dados da reserva no arquivo
@@ -45,7 +46,7 @@ class Pousada:
         arquivo_produtos = open("data/produto.txt", "w", encoding="UTF-8")
                 
         # Escrevendo o cabeçalho
-        arquivo_quartos.write("codigo,nome,preço\n")
+        arquivo_produtos.write("codigo,nome,preço\n")
         
         for produto in self.produtos:
         # Escreve os dados do produto no arquivo
